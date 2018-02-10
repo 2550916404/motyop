@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.java.mapper.ConsigneeMapper" >
+  <resultMap id="BaseResultMap" type="cn.java.entity.Consignee" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="Consignee_name" property="consigneeName" jdbcType="VARCHAR" />
+    <result column="Street_Address" property="streetAddress" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="vipid" property="vipid" jdbcType="BIGINT" />
+    <result column="yu_liu" property="yuLiu" jdbcType="BIGINT" />
+    <result column="yu_liu1" property="yuLiu1" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, Consignee_name, Street_Address, phone, vipid, yu_liu, yu_liu1
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from consignee
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <!--根据id查询地址  -->
+    <select id="selectByPrimaryKeyid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from consignee
+    where vipid = #{id,jdbcType=INTEGER}
+  </select>
+  <!-- 查询所有地址 -->
+  <select id="selectByPrimaryKey1" resultMap="BaseResultMap"  >
+    select 
+    <include refid="Base_Column_List" />
+    from consignee
+    where vipid = #{0}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from consignee
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.java.entity.Consignee" >
+    insert into consignee (id, Consignee_name, Street_Address, 
+      phone, vipid, yu_liu, 
+      yu_liu1)
+    values (#{id,jdbcType=INTEGER}, #{consigneeName,jdbcType=VARCHAR}, #{streetAddress,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{vipid,jdbcType=BIGINT}, #{yuLiu,jdbcType=BIGINT}, 
+      #{yuLiu1,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.java.entity.Consignee" >
+    insert into consignee
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="consigneeName != null" >
+        Consignee_name,
+      </if>
+      <if test="streetAddress != null" >
+        Street_Address,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="vipid != null" >
+        vipid,
+      </if>
+      <if test="yuLiu != null" >
+        yu_liu,
+      </if>
+      <if test="yuLiu1 != null" >
+        yu_liu1,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="consigneeName != null" >
+        #{consigneeName,jdbcType=VARCHAR},
+      </if>
+      <if test="streetAddress != null" >
+        #{streetAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="vipid != null" >
+        #{vipid,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu != null" >
+        #{yuLiu,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu1 != null" >
+        #{yuLiu1,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.java.entity.Consignee" >
+    update consignee
+    <set >
+      <if test="consigneeName != null" >
+        Consignee_name = #{consigneeName,jdbcType=VARCHAR},
+      </if>
+      <if test="streetAddress != null" >
+        Street_Address = #{streetAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="vipid != null" >
+        vipid = #{vipid,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu != null" >
+        yu_liu = #{yuLiu,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu1 != null" >
+        yu_liu1 = #{yuLiu1,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.java.entity.Consignee" >
+    update consignee
+    set Consignee_name = #{consigneeName,jdbcType=VARCHAR},
+      Street_Address = #{streetAddress,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      vipid = #{vipid,jdbcType=BIGINT},
+      yu_liu = #{yuLiu,jdbcType=BIGINT},
+      yu_liu1 = #{yuLiu1,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,45 @@
+@charset "UTF-8";
+table{
+	margin-left:170px;
+	width:550px;
+}
+
+input{
+	width:230px;
+	height:31px;
+	border:none;
+}
+
+.button{
+	width:100px;
+	height:26px;
+	border:1px solid grey;
+}
+.login{
+	display:none;
+}
+
+tr>td:nth-of-type(1){
+	width:120px;
+	height:33px;
+	text-align:center;
+	border-top:1px solid black;
+	border-left:1px solid black;
+	border-right:1px solid black;
+}
+tr>td:nth-of-type(2){
+	width:230px;
+	border-top:1px solid black;
+	border-right:1px solid black;
+}
+
+tr>td:nth-of-type(3){
+	color:red;
+	font-size:15px;
+}
+.table_addByClass tr td:nth-of-type(2){
+	width:100px;
+	border-top:1px solid black;
+	border-right:1px solid black;
+}
+

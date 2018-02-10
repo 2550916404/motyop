@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.java.mapper.OrderingMapper" >
+  <resultMap id="BaseResultMap" type="cn.java.entity.Ordering" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="vid_id" property="vidId" jdbcType="BIGINT" />
+    <result column="Order_time" property="orderTime" jdbcType="TIMESTAMP" />
+    <result column="addressee_name" property="addresseeName" jdbcType="VARCHAR" />
+    <result column="addres" property="addres" jdbcType="VARCHAR" />
+    <result column="Amount" property="amount" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="Order_desc" property="orderDesc" jdbcType="VARCHAR" />
+    <result column="Order_ID" property="orderId" jdbcType="VARCHAR" />
+    <result column="alpay" property="alpay" jdbcType="VARCHAR" />
+    <result column="yu_liu" property="yuLiu" jdbcType="BIGINT" />
+    <result column="yu_liu1" property="yuLiu1" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, vid_id, Order_time, addressee_name, addres, Amount, state, Order_desc, Order_ID, 
+    alpay, yu_liu, yu_liu1
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from ordering
+    where Order_ID = #{id,jdbcType=BIGINT}
+  </select>
+<!--查询所有订单  -->
+  <select id="insertSelective1" resultMap="BaseResultMap"  parameterType="java.lang.Long">
+    select 
+    <include refid="Base_Column_List" />
+    from ordering 
+    where vid_id = #{0}
+  </select>
+  
+ <!-- 获取待付款 -->
+  <select id="showinde1" resultType="java.lang.Long">
+    SELECT COUNT(*) FROM ordering     WHERE state = 1
+  </select>
+  
+  <!-- 获取待发货 -->
+  <select id="showinde2" resultType="java.lang.Long">
+    SELECT COUNT(*) FROM ordering     WHERE state = 2
+  </select>
+  
+  <!-- 获取待收货 -->
+  <select id="showinde3" resultType="java.lang.Long">
+    SELECT COUNT(*) FROM ordering     WHERE state = 3
+  </select>
+  
+ <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from ordering
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+<!-- 按订单删除删除订单 -->
+   <delete id="deleteByPrimaryKey1" parameterType="java.lang.Long" >
+    delete from ordering
+    where Order_Id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.java.entity.Ordering" >
+    insert into ordering (id, vid_id, Order_time, 
+      addressee_name, addres, Amount, 
+      state, Order_desc, Order_ID, 
+      alpay, yu_liu, yu_liu1
+      )
+    values (#{id,jdbcType=BIGINT}, #{vidId,jdbcType=BIGINT}, #{orderTime,jdbcType=TIMESTAMP}, 
+      #{addresseeName,jdbcType=VARCHAR}, #{addres,jdbcType=VARCHAR}, #{amount,jdbcType=VARCHAR}, 
+      #{state,jdbcType=INTEGER}, #{orderDesc,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, 
+      #{alpay,jdbcType=VARCHAR}, #{yuLiu,jdbcType=BIGINT}, #{yuLiu1,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.java.entity.Ordering" >
+    insert into ordering
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="vidId != null" >
+        vid_id,
+      </if>
+      <if test="orderTime != null" >
+        Order_time,
+      </if>
+      <if test="addresseeName != null" >
+        addressee_name,
+      </if>
+      <if test="addres != null" >
+        addres,
+      </if>
+      <if test="amount != null" >
+        Amount,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="orderDesc != null" >
+        Order_desc,
+      </if>
+      <if test="orderId != null" >
+        Order_ID,
+      </if>
+      <if test="alpay != null" >
+        alpay,
+      </if>
+      <if test="yuLiu != null" >
+        yu_liu,
+      </if>
+      <if test="yuLiu1 != null" >
+        yu_liu1,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="vidId != null" >
+        #{vidId,jdbcType=BIGINT},
+      </if>
+      <if test="orderTime != null" >
+        #{orderTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addresseeName != null" >
+        #{addresseeName,jdbcType=VARCHAR},
+      </if>
+      <if test="addres != null" >
+        #{addres,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="orderDesc != null" >
+        #{orderDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="alpay != null" >
+        #{alpay,jdbcType=VARCHAR},
+      </if>
+      <if test="yuLiu != null" >
+        #{yuLiu,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu1 != null" >
+        #{yuLiu1,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.java.entity.Ordering" >
+    update ordering
+    <set >
+      <if test="vidId != null" >
+        vid_id = #{vidId,jdbcType=BIGINT},
+      </if>
+      <if test="orderTime != null" >
+        Order_time = #{orderTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addresseeName != null" >
+        addressee_name = #{addresseeName,jdbcType=VARCHAR},
+      </if>
+      <if test="addres != null" >
+        addres = #{addres,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        Amount = #{amount,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="orderDesc != null" >
+        Order_desc = #{orderDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        Order_ID = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="alpay != null" >
+        alpay = #{alpay,jdbcType=VARCHAR},
+      </if>
+      <if test="yuLiu != null" >
+        yu_liu = #{yuLiu,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu1 != null" >
+        yu_liu1 = #{yuLiu1,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+    <!-- 修改状态 -->
+  <update id="cqupdateByPrimaryKeySelective" parameterType="cn.java.entity.Ordering" >
+    update ordering
+    <set >
+      <if test="vidId != null" >
+        vid_id = #{vidId,jdbcType=BIGINT},
+      </if>
+      <if test="orderTime != null" >
+        Order_time = #{orderTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addresseeName != null" >
+        addressee_name = #{addresseeName,jdbcType=VARCHAR},
+      </if>
+      <if test="addres != null" >
+        addres = #{addres,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        Amount = #{amount,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="orderDesc != null" >
+        Order_desc = #{orderDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        Order_ID = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="alpay != null" >
+        alpay = #{alpay,jdbcType=VARCHAR},
+      </if>
+      <if test="yuLiu != null" >
+        yu_liu = #{yuLiu,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu1 != null" >
+        yu_liu1 = #{yuLiu1,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where Order_ID = #{id}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="cn.java.entity.Ordering" >
+    update ordering
+    set vid_id = #{vidId,jdbcType=BIGINT},
+      Order_time = #{orderTime,jdbcType=TIMESTAMP},
+      addressee_name = #{addresseeName,jdbcType=VARCHAR},
+      addres = #{addres,jdbcType=VARCHAR},
+      Amount = #{amount,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER},
+      Order_desc = #{orderDesc,jdbcType=VARCHAR},
+      Order_ID = #{orderId,jdbcType=VARCHAR},
+      alpay = #{alpay,jdbcType=VARCHAR},
+      yu_liu = #{yuLiu,jdbcType=BIGINT},
+      yu_liu1 = #{yuLiu1,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+    <select id="selectActiveAdmin" parameterType="map" resultType="map">
+		select
+		<include refid="Base_Column_List" />
+		from ordering where 1=1
+		<if test="vid_id != null">
+			and vid_id = #{vid_id,jdbcType=BIGINT}
+		</if>
+		<if test="addressee_name != null">
+			and addressee_name like concat('%',#{addressee_name,jdbcType=VARCHAR},'%')
+		</if>
+		limit #{index},#{pageSize}
+	</select>
+	
+	<select id="selectCountAdmin" parameterType="map" resultType="Integer">
+		select count(*) as sum from ordering where 1=1
+		<if test="vid_id != null">
+			and vid_id = #{vid_id,jdbcType=BIGINT}
+		</if>
+		<if test="addressee_name != null">
+			and addressee_name like concat('%',#{addressee_name,jdbcType=VARCHAR},'%')
+		</if>
+	</select>
+</mapper>

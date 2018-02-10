@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.java.mapper.Area_TableMapper" >
+  <resultMap id="BaseResultMap" type="cn.java.entity.Area_Table" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="pid" property="pid" jdbcType="BIGINT" />
+    <result column="ppid" property="ppid" jdbcType="BIGINT" />
+    <result column="yu_liu" property="yuLiu" jdbcType="BIGINT" />
+    <result column="yu_liu1" property="yuLiu1" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, city, pid, ppid, yu_liu, yu_liu1
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from area_table
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from area_table
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.java.entity.Area_Table" >
+    insert into area_table (id, city, pid, 
+      ppid, yu_liu, yu_liu1)
+    values (#{id,jdbcType=BIGINT}, #{city,jdbcType=VARCHAR}, #{pid,jdbcType=BIGINT}, 
+      #{ppid,jdbcType=BIGINT}, #{yuLiu,jdbcType=BIGINT}, #{yuLiu1,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.java.entity.Area_Table" >
+    insert into area_table
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="ppid != null" >
+        ppid,
+      </if>
+      <if test="yuLiu != null" >
+        yu_liu,
+      </if>
+      <if test="yuLiu1 != null" >
+        yu_liu1,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=BIGINT},
+      </if>
+      <if test="ppid != null" >
+        #{ppid,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu != null" >
+        #{yuLiu,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu1 != null" >
+        #{yuLiu1,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.java.entity.Area_Table" >
+    update area_table
+    <set >
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=BIGINT},
+      </if>
+      <if test="ppid != null" >
+        ppid = #{ppid,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu != null" >
+        yu_liu = #{yuLiu,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu1 != null" >
+        yu_liu1 = #{yuLiu1,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.java.entity.Area_Table" >
+    update area_table
+    set city = #{city,jdbcType=VARCHAR},
+      pid = #{pid,jdbcType=BIGINT},
+      ppid = #{ppid,jdbcType=BIGINT},
+      yu_liu = #{yuLiu,jdbcType=BIGINT},
+      yu_liu1 = #{yuLiu1,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

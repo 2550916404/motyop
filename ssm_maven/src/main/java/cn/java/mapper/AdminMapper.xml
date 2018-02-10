@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.java.mapper.AdminMapper" >
+  <resultMap id="BaseResultMap" type="cn.java.entity.Admin" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="admin_user" property="adminUser" jdbcType="VARCHAR" />
+    <result column="admin_passwoed" property="adminPasswoed" jdbcType="VARCHAR" />
+    <result column="yu_liu" property="yuLiu" jdbcType="BIGINT" />
+    <result column="yu_liu1" property="yuLiu1" jdbcType="VARCHAR" />
+  </resultMap>
+  
+   <!--账号密码登录  -->
+   <select id="superLogin" resultType="Map" parameterType="String" >
+    SELECT COUNT(*) AS num FROM admin  WHERE admin_user=#{0} and admin_passwoed=#{1};
+  </select>
+  
+    <!--密码验证  -->
+   <select id="superLoginYanZheng" resultType="Integer" parameterType="String" >
+    SELECT COUNT(*) AS num FROM admin  WHERE   admin_passwoed=#{0};
+  </select>
+  
+   <!--修改密码  -->
+  <update id="updateAdminUser" parameterType="String" >
+    update admin set  admin_passwoed = #{0} where admin_user= #{1};
+     
+     
+     
+    
+  </update>
+  
+  
+  <sql id="Base_Column_List" >
+    id, admin_user, admin_passwoed, yu_liu, yu_liu1
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from admin
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from admin
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.java.entity.Admin" >
+    insert into admin (id, admin_user, admin_passwoed, 
+      yu_liu, yu_liu1)
+    values (#{id,jdbcType=BIGINT}, #{adminUser,jdbcType=VARCHAR}, #{adminPasswoed,jdbcType=VARCHAR}, 
+      #{yuLiu,jdbcType=BIGINT}, #{yuLiu1,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.java.entity.Admin" >
+    insert into admin
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="adminUser != null" >
+        admin_user,
+      </if>
+      <if test="adminPasswoed != null" >
+        admin_passwoed,
+      </if>
+      <if test="yuLiu != null" >
+        yu_liu,
+      </if>
+      <if test="yuLiu1 != null" >
+        yu_liu1,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="adminUser != null" >
+        #{adminUser,jdbcType=VARCHAR},
+      </if>
+      <if test="adminPasswoed != null" >
+        #{adminPasswoed,jdbcType=VARCHAR},
+      </if>
+      <if test="yuLiu != null" >
+        #{yuLiu,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu1 != null" >
+        #{yuLiu1,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.java.entity.Admin" >
+    update admin
+    <set >
+      <if test="adminUser != null" >
+        admin_user = #{adminUser,jdbcType=VARCHAR},
+      </if>
+      <if test="adminPasswoed != null" >
+        admin_passwoed = #{adminPasswoed,jdbcType=VARCHAR},
+      </if>
+      <if test="yuLiu != null" >
+        yu_liu = #{yuLiu,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu1 != null" >
+        yu_liu1 = #{yuLiu1,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.java.entity.Admin" >
+    update admin
+    set admin_user = #{adminUser,jdbcType=VARCHAR},
+      admin_passwoed = #{adminPasswoed,jdbcType=VARCHAR},
+      yu_liu = #{yuLiu,jdbcType=BIGINT},
+      yu_liu1 = #{yuLiu1,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

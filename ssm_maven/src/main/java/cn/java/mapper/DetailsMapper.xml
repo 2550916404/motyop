@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.java.mapper.DetailsMapper" >
+  <resultMap id="BaseResultMap" type="cn.java.entity.Details" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="oid" property="oid" jdbcType="BIGINT" />
+    <result column="cid" property="cid" jdbcType="BIGINT" />
+    <result column="cai_name" property="caiName" jdbcType="VARCHAR" />
+    <result column="cai_num" property="caiNum" jdbcType="BIGINT" />
+    <result column="cai_price" property="caiPrice" jdbcType="BIGINT" />
+    <result column="shopname" property="shopname" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, oid, cid, cai_name, cai_num, cai_price, shopname
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from details
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from details
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.java.entity.Details" >
+    insert into details (id, oid, cid, cai_name, 
+      cai_num, cai_price, shopname
+      )
+    values (#{id,jdbcType=BIGINT}, #{oid,jdbcType=BIGINT}, #{cid,jdbcType=BIGINT}, #{caiName,jdbcType=VARCHAR}, 
+      #{caiNum,jdbcType=BIGINT}, #{caiPrice,jdbcType=BIGINT}, #{shopname,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.java.entity.Details" >
+    insert into details
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="oid != null" >
+        oid,
+      </if>
+      <if test="cid != null" >
+        cid,
+      </if>
+      <if test="caiName != null" >
+        cai_name,
+      </if>
+      <if test="caiNum != null" >
+        cai_num,
+      </if>
+      <if test="caiPrice != null" >
+        cai_price,
+      </if>
+      <if test="shopname != null" >
+        shopname,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="oid != null" >
+        #{oid,jdbcType=BIGINT},
+      </if>
+      <if test="cid != null" >
+        #{cid,jdbcType=BIGINT},
+      </if>
+      <if test="caiName != null" >
+        #{caiName,jdbcType=VARCHAR},
+      </if>
+      <if test="caiNum != null" >
+        #{caiNum,jdbcType=BIGINT},
+      </if>
+      <if test="caiPrice != null" >
+        #{caiPrice,jdbcType=BIGINT},
+      </if>
+      <if test="shopname != null" >
+        #{shopname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.java.entity.Details" >
+    update details
+    <set >
+      <if test="oid != null" >
+        oid = #{oid,jdbcType=BIGINT},
+      </if>
+      <if test="cid != null" >
+        cid = #{cid,jdbcType=BIGINT},
+      </if>
+      <if test="caiName != null" >
+        cai_name = #{caiName,jdbcType=VARCHAR},
+      </if>
+      <if test="caiNum != null" >
+        cai_num = #{caiNum,jdbcType=BIGINT},
+      </if>
+      <if test="caiPrice != null" >
+        cai_price = #{caiPrice,jdbcType=BIGINT},
+      </if>
+      <if test="shopname != null" >
+        shopname = #{shopname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.java.entity.Details" >
+    update details
+    set oid = #{oid,jdbcType=BIGINT},
+      cid = #{cid,jdbcType=BIGINT},
+      cai_name = #{caiName,jdbcType=VARCHAR},
+      cai_num = #{caiNum,jdbcType=BIGINT},
+      cai_price = #{caiPrice,jdbcType=BIGINT},
+      shopname = #{shopname,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.java.mapper.ShopPingCartMapper" >
+  <resultMap id="BaseResultMap" type="cn.java.entity.ShopPingCart" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="shop_id" property="shopId" jdbcType="BIGINT" />
+    <result column="Dishes_id" property="dishesId" jdbcType="BIGINT" />
+    <result column="Dishes_original" property="dishesOriginal" jdbcType="REAL" />
+    <result column="Dishes_pcs" property="dishesPcs" jdbcType="INTEGER" />
+    <result column="Discount" property="discount" jdbcType="INTEGER" />
+    <result column="yu_liu" property="yuLiu" jdbcType="BIGINT" />
+    <result column="yu_liu1" property="yuLiu1" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, shop_id, Dishes_id, Dishes_original, Dishes_pcs, Discount, yu_liu, yu_liu1
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from shopping_cart
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from shopping_cart
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.java.entity.ShopPingCart" >
+    insert into shopping_cart (id, shop_id, Dishes_id, 
+      Dishes_original, Dishes_pcs, Discount, 
+      yu_liu, yu_liu1)
+    values (#{id,jdbcType=BIGINT}, #{shopId,jdbcType=BIGINT}, #{dishesId,jdbcType=BIGINT}, 
+      #{dishesOriginal,jdbcType=REAL}, #{dishesPcs,jdbcType=INTEGER}, #{discount,jdbcType=INTEGER}, 
+      #{yuLiu,jdbcType=BIGINT}, #{yuLiu1,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.java.entity.ShopPingCart" >
+    insert into shopping_cart
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="shopId != null" >
+        shop_id,
+      </if>
+      <if test="dishesId != null" >
+        Dishes_id,
+      </if>
+      <if test="dishesOriginal != null" >
+        Dishes_original,
+      </if>
+      <if test="dishesPcs != null" >
+        Dishes_pcs,
+      </if>
+      <if test="discount != null" >
+        Discount,
+      </if>
+      <if test="yuLiu != null" >
+        yu_liu,
+      </if>
+      <if test="yuLiu1 != null" >
+        yu_liu1,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="shopId != null" >
+        #{shopId,jdbcType=BIGINT},
+      </if>
+      <if test="dishesId != null" >
+        #{dishesId,jdbcType=BIGINT},
+      </if>
+      <if test="dishesOriginal != null" >
+        #{dishesOriginal,jdbcType=REAL},
+      </if>
+      <if test="dishesPcs != null" >
+        #{dishesPcs,jdbcType=INTEGER},
+      </if>
+      <if test="discount != null" >
+        #{discount,jdbcType=INTEGER},
+      </if>
+      <if test="yuLiu != null" >
+        #{yuLiu,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu1 != null" >
+        #{yuLiu1,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.java.entity.ShopPingCart" >
+    update shopping_cart
+    <set >
+      <if test="shopId != null" >
+        shop_id = #{shopId,jdbcType=BIGINT},
+      </if>
+      <if test="dishesId != null" >
+        Dishes_id = #{dishesId,jdbcType=BIGINT},
+      </if>
+      <if test="dishesOriginal != null" >
+        Dishes_original = #{dishesOriginal,jdbcType=REAL},
+      </if>
+      <if test="dishesPcs != null" >
+        Dishes_pcs = #{dishesPcs,jdbcType=INTEGER},
+      </if>
+      <if test="discount != null" >
+        Discount = #{discount,jdbcType=INTEGER},
+      </if>
+      <if test="yuLiu != null" >
+        yu_liu = #{yuLiu,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu1 != null" >
+        yu_liu1 = #{yuLiu1,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.java.entity.ShopPingCart" >
+    update shopping_cart
+    set shop_id = #{shopId,jdbcType=BIGINT},
+      Dishes_id = #{dishesId,jdbcType=BIGINT},
+      Dishes_original = #{dishesOriginal,jdbcType=REAL},
+      Dishes_pcs = #{dishesPcs,jdbcType=INTEGER},
+      Discount = #{discount,jdbcType=INTEGER},
+      yu_liu = #{yuLiu,jdbcType=BIGINT},
+      yu_liu1 = #{yuLiu1,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

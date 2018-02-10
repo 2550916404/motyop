@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.java.mapper.MenuMapper" >
+    <!-- redis是第三方的缓存，需要在mybatis中显示的指定出来 -->
+	<cache type="cn.java.utils.redis.RedisCache"></cache>
+
+  <resultMap id="BaseResultMap" type="cn.java.entity.Menu" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="cai_name" property="caiName" jdbcType="VARCHAR" />
+    <result column="cai_imagepath" property="caiImagepath" jdbcType="VARCHAR" />
+    <result column="cai_type" property="caiType" jdbcType="VARCHAR" />
+    <result column="cai_desc" property="caiDesc" jdbcType="VARCHAR" />
+    <result column="old_price" property="oldPrice" jdbcType="REAL" />
+    <result column="discount" property="discount" jdbcType="REAL" />
+    <result column="sid" property="sid" jdbcType="BIGINT" />
+    <result column="cai_estimate" property="caiEstimate" jdbcType="INTEGER" />
+    <result column="salenum" property="salenum" jdbcType="BIGINT" />
+    <result column="adds" property="adds" jdbcType="VARCHAR" />
+    <result column="cai_xi" property="caiXi" jdbcType="VARCHAR" />
+    <result column="yu_liu" property="yuLiu" jdbcType="BIGINT" />
+    <result column="yu_liu1" property="yuLiu1" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, cai_name, cai_imagepath, cai_type, cai_desc, old_price, discount, sid, 
+    cai_estimate, salenum, adds, cai_xi, yu_liu, yu_liu1
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from menu
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <!-- 分页查询所有菜品 -->
+  <select id="selectAllMenu1" resultType="Map" parameterType="java.lang.Integer">
+	  SELECT m.id,m.cai_imagepath,m.cai_name,s.shop_name,m.cai_xi,s.shop_address,s.price,s.grade 
+	  FROM menu m,shop s WHERE m.sid=s.id limit #{0},#{1}
+  </select>
+  
+  <!--查询返回总信息条数的方法 -->
+  <select id="selectAllNum" resultType="Map">
+  select  count(*)  as   max  from  menu  
+  </select>
+  
+  <!-- 查询所有菜品 -->
+  <select id="selectAllMenu" resultType="Map">
+	  SELECT m.id,m.cai_imagepath,m.cai_name,s.shop_name,m.cai_xi,s.shop_address,s.price,s.grade 
+	  FROM menu m,shop s WHERE m.sid=s.id 
+  </select>
+  
+  <!-- 所有菜品按价格排序 -->
+  <select id="paixuByprice" resultType="Map">
+	  SELECT m.id,m.cai_imagepath,m.cai_name,s.shop_name,m.cai_xi,s.shop_address,s.price,s.grade 
+	  FROM menu m,shop s WHERE m.sid=s.id ORDER BY s.price
+  </select>
+  
+  <!-- 所有菜品按评价排序 -->
+  <select id="paixuBygrade" resultType="Map">
+	  SELECT m.id,m.cai_imagepath,m.cai_name,s.shop_name,m.cai_xi,s.shop_address,s.price,s.grade 
+	  FROM menu m,shop s WHERE m.sid=s.id ORDER BY s.grade
+  </select>
+  
+  
+  <!-- 根据店铺查询菜单 -->
+  <select id="selectMenuByshop" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from menu
+    where sid = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <!-- 根据店铺id查询菜单信息 -->
+  <select id="getMenuByshop" resultType="Map" parameterType="java.lang.Long" >
+    select * FROM menu m left join shop s on m.sid=s.id
+    where m.sid = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <!-- 根据食物名查询菜品 -->
+  <select id="selectFood" parameterType="String" resultType="Map">
+      SELECT m.id,m.cai_imagepath,m.old_price,m.cai_name,s.shop_name,s.diqu 
+	  FROM menu m left join shop s on m.sid=s.id WHERE m.cai_name like concat("%",#{0},"%")
+  </select>
+  
+  <!-- 查询菜系 -->
+  <select id="selectCaixi" resultType="Map">
+  SELECT DISTINCT cai_xi FROM menu
+  </select>
+  
+  <!-- 查询位置 -->
+  <select id="selectAddress" resultType="Map">
+  SELECT DISTINCT diqu FROM shop
+  </select>
+  
+  <!-- 查询餐点 -->
+  <select id="selectCaitype" resultType="Map">
+  SELECT DISTINCT cai_type FROM menu
+  </select>
+  
+  <!-- 查询6条菜品名 -->
+  <select id="selectCainame" resultType="Map" useCache="true">
+  SELECT cai_name FROM menu ORDER BY id DESC LIMIT 6
+  </select>
+  
+  <!-- 按餐点查询食物 -->
+  <select id="selectFoodByType" parameterType="String" resultType="Map">
+    SELECT m.id,m.cai_imagepath,m.cai_name,s.shop_name,m.cai_xi,s.shop_address,s.price,s.grade 
+	  FROM menu m left join shop s on m.sid=s.id where m.cai_type=#{0}
+	  <!-- <where>
+	    <if test="cai_xi!=null">
+	       m.cai_xi=#{caixi }
+	    </if>
+	    <if test="diqu!=null">
+	       and s.diqu=#{diqu }
+	    </if>
+	    <if test="cai_type!=null">
+	       and m.cai_type=#{type }
+	    </if>
+	  </where> -->
+  </select>
+  
+  <!-- 按菜系查询食物 -->
+  <select id="selectFoodByCaixi" parameterType="String" resultType="Map">
+    SELECT m.id,m.cai_imagepath,m.cai_name,s.shop_name,m.cai_xi,s.shop_address,s.price,s.grade 
+	  FROM menu m left join shop s on m.sid=s.id where m.cai_xi=#{0}
+  </select>
+  
+  <!-- 按地区查询食物 -->
+  <select id="selectFoodByDiqu" parameterType="String" resultType="Map">
+    SELECT m.id,m.cai_imagepath,m.cai_name,s.shop_name,m.cai_xi,s.shop_address,s.price,s.grade 
+	  FROM menu m left join shop s on m.sid=s.id where s.diqu=#{0}
+  </select>
+  
+  <!-- 随机查询三道不重复菜品 范绍龙 -->
+  <select id="selectMenuThree" resultMap="BaseResultMap">
+  SELECT 
+  <include refid="Base_Column_List" />
+  FROM menu ORDER BY RAND() LIMIT 6
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from menu
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.java.entity.Menu" >
+    insert into menu (id, cai_name, cai_imagepath, 
+      cai_type, cai_desc, old_price, 
+      discount, sid, 
+      cai_estimate, salenum, adds, 
+      cai_xi, yu_liu, yu_liu1
+      )
+    values (#{id,jdbcType=BIGINT}, #{caiName,jdbcType=VARCHAR}, #{caiImagepath,jdbcType=VARCHAR}, 
+      #{caiType,jdbcType=VARCHAR}, #{caiDesc,jdbcType=VARCHAR}, #{oldPrice,jdbcType=REAL}, 
+      #{discount,jdbcType=REAL}, #{sid,jdbcType=BIGINT},
+      #{caiEstimate,jdbcType=INTEGER}, #{salenum,jdbcType=BIGINT}, #{adds,jdbcType=VARCHAR}, 
+      #{caiXi,jdbcType=VARCHAR}, #{yuLiu,jdbcType=BIGINT}, #{yuLiu1,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.java.entity.Menu" >
+    insert into menu
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="caiName != null" >
+        cai_name,
+      </if>
+      <if test="caiImagepath != null" >
+        cai_imagepath,
+      </if>
+      <if test="caiType != null" >
+        cai_type,
+      </if>
+      <if test="caiDesc != null" >
+        cai_desc,
+      </if>
+      <if test="oldPrice != null" >
+        old_price,
+      </if>
+      <if test="discount != null" >
+        discount,
+      </if>
+      <if test="sid != null" >
+        sid,
+      </if>
+      <if test="caiEstimate != null" >
+        cai_estimate,
+      </if>
+      <if test="salenum != null" >
+        salenum,
+      </if>
+      <if test="adds != null" >
+        adds,
+      </if>
+      <if test="caiXi != null" >
+        cai_xi,
+      </if>
+      <if test="yuLiu != null" >
+        yu_liu,
+      </if>
+      <if test="yuLiu1 != null" >
+        yu_liu1,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="caiName != null" >
+        #{caiName,jdbcType=VARCHAR},
+      </if>
+      <if test="caiImagepath != null" >
+        #{caiImagepath,jdbcType=VARCHAR},
+      </if>
+      <if test="caiType != null" >
+        #{caiType,jdbcType=VARCHAR},
+      </if>
+      <if test="caiDesc != null" >
+        #{caiDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="oldPrice != null" >
+        #{oldPrice,jdbcType=REAL},
+      </if>
+      <if test="discount != null" >
+        #{discount,jdbcType=REAL},
+      </if>
+      <if test="sid != null" >
+        #{sid,jdbcType=BIGINT},
+      </if>
+      <if test="caiEstimate != null" >
+        #{caiEstimate,jdbcType=INTEGER},
+      </if>
+      <if test="salenum != null" >
+        #{salenum,jdbcType=BIGINT},
+      </if>
+      <if test="adds != null" >
+        #{adds,jdbcType=VARCHAR},
+      </if>
+      <if test="caiXi != null" >
+        #{caiXi,jdbcType=VARCHAR},
+      </if>
+      <if test="yuLiu != null" >
+        #{yuLiu,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu1 != null" >
+        #{yuLiu1,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.java.entity.Menu" >
+    update menu
+    <set >
+      <if test="caiName != null" >
+        cai_name = #{caiName,jdbcType=VARCHAR},
+      </if>
+      <if test="caiImagepath != null" >
+        cai_imagepath = #{caiImagepath,jdbcType=VARCHAR},
+      </if>
+      <if test="caiType != null" >
+        cai_type = #{caiType,jdbcType=VARCHAR},
+      </if>
+      <if test="caiDesc != null" >
+        cai_desc = #{caiDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="oldPrice != null" >
+        old_price = #{oldPrice,jdbcType=REAL},
+      </if>
+      <if test="discount != null" >
+        discount = #{discount,jdbcType=REAL},
+      </if>
+      <if test="sid != null" >
+        sid = #{sid,jdbcType=BIGINT},
+      </if>
+      <if test="caiEstimate != null" >
+        cai_estimate = #{caiEstimate,jdbcType=INTEGER},
+      </if>
+      <if test="salenum != null" >
+        salenum = #{salenum,jdbcType=BIGINT},
+      </if>
+      <if test="adds != null" >
+        adds = #{adds,jdbcType=VARCHAR},
+      </if>
+      <if test="caiXi != null" >
+        cai_xi = #{caiXi,jdbcType=VARCHAR},
+      </if>
+      <if test="yuLiu != null" >
+        yu_liu = #{yuLiu,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu1 != null" >
+        yu_liu1 = #{yuLiu1,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.java.entity.Menu" >
+    update menu
+    set cai_name = #{caiName,jdbcType=VARCHAR},
+      cai_imagepath = #{caiImagepath,jdbcType=VARCHAR},
+      cai_type = #{caiType,jdbcType=VARCHAR},
+      cai_desc = #{caiDesc,jdbcType=VARCHAR},
+      old_price = #{oldPrice,jdbcType=REAL},
+      discount = #{discount,jdbcType=REAL},
+      sid = #{sid,jdbcType=BIGINT},
+      cai_estimate = #{caiEstimate,jdbcType=INTEGER},
+      salenum = #{salenum,jdbcType=BIGINT},
+      adds = #{adds,jdbcType=VARCHAR},
+      cai_xi = #{caiXi,jdbcType=VARCHAR},
+      yu_liu = #{yuLiu,jdbcType=BIGINT},
+      yu_liu1 = #{yuLiu1,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+   <select id="selectActiveAdmin" parameterType="map" resultType="map">
+		select
+			m.id, m.cai_name, m.cai_imagepath,m.cai_type, m.cai_desc,m.old_price,m.discount, s.shop_name, 
+    		m.cai_estimate, m.salenum, m.adds, m.cai_xi, m.yu_liu, m.yu_liu1
+		from menu m,shop s <!-- where 1=1 -->
+		<!-- <if test="categoryId != null">
+			and category_id = #{categoryId,jdbcType=BIGINT}
+		</if> -->
+		<!-- <if test="cai_name != null">
+			and cai_name like concat('%',#{cai_name,jdbcType=VARCHAR},'%')
+		</if> -->
+		where s.id=m.sid
+		limit #{index},#{pageSize}
+		
+	</select>
+	
+	<select id="selectCountAdmin" parameterType="map" resultType="Integer">
+		select count(*) as sum from menu where 1=1
+		<!--  <if test="cai_name!= null">
+			and cai_name like concat('%',#{cai_name,jdbcType=VARCHAR},'%')
+		</if>  -->
+		<if test="cai_name!= null">
+			and cai_name like concat('%',#{cai_name,jdbcType=VARCHAR},'%')
+		</if>
+	</select>
+	<delete id="deleteMenu" parameterType="java.lang.Long" >
+    	delete from menu
+   		where id = #{id,jdbcType=BIGINT}
+  </delete>
+</mapper>

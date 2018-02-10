@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.java.mapper.ShopdetailMapper" >
+  <resultMap id="BaseResultMap" type="cn.java.entity.Shopdetail" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="shop_name" property="shopName" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="route" property="route" jdbcType="VARCHAR" />
+    <result column="shop_desc" property="shopDesc" jdbcType="VARCHAR" />
+    <result column="sid" property="sid" jdbcType="BIGINT" />
+    <result column="yu_liu" property="yuLiu" jdbcType="BIGINT" />
+    <result column="yu_liu1" property="yuLiu1" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, shop_name, address, phone, route, shop_desc, sid, yu_liu, yu_liu1
+  </sql>
+  
+  <!-- 查询店铺详情 -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from shopdetail
+    where sid = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from shopdetail
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.java.entity.Shopdetail" >
+    insert into shopdetail (id, shop_name, address, 
+      phone, route, shop_desc, 
+      sid, yu_liu, yu_liu1)
+    values (#{id,jdbcType=BIGINT}, #{shopName,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{route,jdbcType=VARCHAR}, #{shopDesc,jdbcType=VARCHAR}, 
+      #{sid,jdbcType=BIGINT}, #{yuLiu,jdbcType=BIGINT}, #{yuLiu1,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.java.entity.Shopdetail" >
+    insert into shopdetail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="shopName != null" >
+        shop_name,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="route != null" >
+        route,
+      </if>
+      <if test="shopDesc != null" >
+        shop_desc,
+      </if>
+      <if test="sid != null" >
+        sid,
+      </if>
+      <if test="yuLiu != null" >
+        yu_liu,
+      </if>
+      <if test="yuLiu1 != null" >
+        yu_liu1,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="shopName != null" >
+        #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="route != null" >
+        #{route,jdbcType=VARCHAR},
+      </if>
+      <if test="shopDesc != null" >
+        #{shopDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="sid != null" >
+        #{sid,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu != null" >
+        #{yuLiu,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu1 != null" >
+        #{yuLiu1,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.java.entity.Shopdetail" >
+    update shopdetail
+    <set >
+      <if test="shopName != null" >
+        shop_name = #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="route != null" >
+        route = #{route,jdbcType=VARCHAR},
+      </if>
+      <if test="shopDesc != null" >
+        shop_desc = #{shopDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="sid != null" >
+        sid = #{sid,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu != null" >
+        yu_liu = #{yuLiu,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu1 != null" >
+        yu_liu1 = #{yuLiu1,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.java.entity.Shopdetail" >
+    update shopdetail
+    set shop_name = #{shopName,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      route = #{route,jdbcType=VARCHAR},
+      shop_desc = #{shopDesc,jdbcType=VARCHAR},
+      sid = #{sid,jdbcType=BIGINT},
+      yu_liu = #{yuLiu,jdbcType=BIGINT},
+      yu_liu1 = #{yuLiu1,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

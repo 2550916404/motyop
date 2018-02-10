@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.java.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="cn.java.entity.User" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="iphone" property="iphone" jdbcType="BIGINT" />
+    <result column="yu_liu" property="yuLiu" jdbcType="BIGINT" />
+    <result column="yu_liu1" property="yuLiu1" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, username, password, email, iphone, yu_liu, yu_liu1
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <!--验证用户名是否存在  -->
+  <select id="selectName" resultType="Map" parameterType="String" >
+    SELECT COUNT(*) AS num FROM USER  WHERE username=#{username};
+  </select>
+  <!--验证手机号是否存在  -->
+  <select id="selectphone" resultType="Map" parameterType="java.lang.Long" >
+    SELECT COUNT(*) AS num,id,iphone,email,username FROM USER  WHERE iphone = #{iphone,jdbcType=BIGINT}
+  </select>
+  <!--账号密码登录  -->
+   <select id="zhlogin" resultType="Map" parameterType="String" >
+    SELECT COUNT(*) AS num,id,iphone,email,username FROM USER  WHERE username=#{0} and password=#{1};
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  
+   <!--后台用户分页查询  -->
+  <select id="selectActiveAdmin" parameterType="map" resultType="map">
+		select
+		<include refid="Base_Column_List" />
+		from user where 1=1
+		<!-- <if test="categoryId != null">
+			and category_id = #{categoryId,jdbcType=BIGINT}
+		</if> -->
+		<if test="username != null">
+			and username like concat('%',#{username,jdbcType=VARCHAR},'%')
+		</if>
+		limit #{index},#{pageSize}
+	</select>
+ <!--后台用户获取总数据条数  -->
+	<select id="selectCountAdmin" parameterType="map" resultType="Integer">
+		select count(*) as sum from user where 1=1
+		<!-- <if test="categoryId != null">
+			and category_id = #{categoryId,jdbcType=BIGINT}
+		</if> -->
+		<if test="username != null">
+			and username like concat('%',#{username,jdbcType=VARCHAR},'%')
+		</if>
+	</select>
+  <!-- 修改邮箱 -->
+  <update id="updateemail" parameterType="cn.java.entity.User" >
+    update user set email = #{email,jdbcType=VARCHAR} where id = #{id,jdbcType=BIGINT}
+  </update>
+   <!-- 修改手机号码 -->
+    <update id="updatephone" parameterType="cn.java.entity.User" >
+    update user set iphone = #{iphone,jdbcType=BIGINT} where id = #{id,jdbcType=BIGINT}
+  </update>
+   <!-- 修改密码 -->
+    <update id="updatepwd" parameterType="cn.java.entity.User" >
+    update user set password = #{password,jdbcType=VARCHAR} where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  
+  
+  
+  
+  
+  
+  
+  <insert id="insert" parameterType="cn.java.entity.User" >
+    insert into user (id, username, password, 
+      email, iphone, yu_liu, 
+      yu_liu1)
+    values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{iphone,jdbcType=BIGINT}, #{yuLiu,jdbcType=BIGINT}, 
+      #{yuLiu1,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.java.entity.User" >
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="iphone != null" >
+        iphone,
+      </if>
+      <if test="yuLiu != null" >
+        yu_liu,
+      </if>
+      <if test="yuLiu1 != null" >
+        yu_liu1,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="iphone != null" >
+        #{iphone,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu != null" >
+        #{yuLiu,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu1 != null" >
+        #{yuLiu1,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.java.entity.User" >
+    update user
+    <set >
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="iphone != null" >
+        iphone = #{iphone,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu != null" >
+        yu_liu = #{yuLiu,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu1 != null" >
+        yu_liu1 = #{yuLiu1,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.java.entity.User" >
+    update user
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      iphone = #{iphone,jdbcType=BIGINT},
+      yu_liu = #{yuLiu,jdbcType=BIGINT},
+      yu_liu1 = #{yuLiu1,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.java.mapper.MessageMapper" >
+  <resultMap id="BaseResultMap" type="cn.java.entity.Message" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="supplement" property="supplement" jdbcType="VARCHAR" />
+    <result column="sid" property="sid" jdbcType="BIGINT" />
+    <result column="liuyan_time" property="liuyanTime" jdbcType="TIMESTAMP" />
+    <result column="yu_liu" property="yuLiu" jdbcType="BIGINT" />
+    <result column="yu_liu1" property="yuLiu1" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, phone, email, supplement, sid, liuyan_time, yu_liu, yu_liu1
+  </sql>
+  
+  
+  <!--查询留言 -->
+   <!--后台用户分页查询  -->
+  <select id="selectActiveAdminMessage" parameterType="map" resultType="map">
+		SELECT s.shop_name ,m.*  FROM  message  m ,shop s  WHERE  m.sid=s.id
+		 <!-- <if test="categoryId != null">
+			and category_id = #{categoryId,jdbcType=BIGINT}
+		</if>  -->
+		<!-- <if test="name != null">
+			where name like concat('%',#{name,jdbcType=VARCHAR},'%')
+		</if> -->
+		limit #{index},#{pageSize}
+	</select>
+ <!--后台用户获取总数据条数  -->
+	<select id="selectCountAdminMessage" parameterType="map" resultType="Integer">
+	select count(*) as sum from message where 1=1
+		<!--  <if test="categoryId != null">
+			and category_id = #{categoryId,jdbcType=BIGINT}
+		</if>  -->
+		<!-- <if test="name != null">
+			 name like concat('%',#{name,jdbcType=VARCHAR},'%')
+		</if> -->
+	</select>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from message
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <!-- 查询店铺的留言 -->
+  <select id="selectByshop" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from message
+    where sid = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from message
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.java.entity.Message" >
+    insert into message (id, name, phone, 
+      email, supplement, sid, 
+      liuyan_time, yu_liu, yu_liu1
+      )
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{supplement,jdbcType=VARCHAR}, #{sid,jdbcType=BIGINT}, 
+      #{liuyanTime,jdbcType=TIMESTAMP}, #{yuLiu,jdbcType=BIGINT}, #{yuLiu1,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <!-- 添加留言 -->
+  <insert id="insertSelective" parameterType="cn.java.entity.Message" >
+    insert into message
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="supplement != null" >
+        supplement,
+      </if>
+      <if test="sid != null" >
+        sid,
+      </if>
+      <if test="liuyanTime != null" >
+        liuyan_time,
+      </if>
+      <if test="yuLiu != null" >
+        yu_liu,
+      </if>
+      <if test="yuLiu1 != null" >
+        yu_liu1,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="supplement != null" >
+        #{supplement,jdbcType=VARCHAR},
+      </if>
+      <if test="sid != null" >
+        #{sid,jdbcType=BIGINT},
+      </if>
+      <if test="liuyanTime != null" >
+        #{liuyanTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="yuLiu != null" >
+        #{yuLiu,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu1 != null" >
+        #{yuLiu1,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="cn.java.entity.Message" >
+    update message
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="supplement != null" >
+        supplement = #{supplement,jdbcType=VARCHAR},
+      </if>
+      <if test="sid != null" >
+        sid = #{sid,jdbcType=BIGINT},
+      </if>
+      <if test="liuyanTime != null" >
+        liuyan_time = #{liuyanTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="yuLiu != null" >
+        yu_liu = #{yuLiu,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu1 != null" >
+        yu_liu1 = #{yuLiu1,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.java.entity.Message" >
+    update message
+    set name = #{name,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      supplement = #{supplement,jdbcType=VARCHAR},
+      sid = #{sid,jdbcType=BIGINT},
+      liuyan_time = #{liuyanTime,jdbcType=TIMESTAMP},
+      yu_liu = #{yuLiu,jdbcType=BIGINT},
+      yu_liu1 = #{yuLiu1,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

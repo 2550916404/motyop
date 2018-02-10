@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.java.mapper.ShopMapper">
+  <resultMap id="BaseResultMap" type="cn.java.entity.Shop">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="shop_name" jdbcType="VARCHAR" property="shopName" />
+    <result column="shop_address" jdbcType="VARCHAR" property="shopAddress" />
+    <result column="shop_phone" jdbcType="VARCHAR" property="shopPhone" />
+    <result column="grade" jdbcType="INTEGER" property="grade" />
+    <result column="specialties" jdbcType="VARCHAR" property="specialties" />
+    <result column="parking_space" jdbcType="VARCHAR" property="parkingSpace" />
+    <result column="opening_hours" jdbcType="VARCHAR" property="openingHours" />
+    <result column="activity" jdbcType="VARCHAR" property="activity" />
+    <result column="wifi" jdbcType="VARCHAR" property="wifi" />
+    <result column="shop_imagepath" jdbcType="VARCHAR" property="shopImagepath" />
+    <result column="huifu_time" jdbcType="TIMESTAMP" property="huifuTime" />
+    <result column="price" jdbcType="BIGINT" property="price" />
+    <result column="diqu" jdbcType="VARCHAR" property="diqu" />
+    <result column="yu_liu" jdbcType="BIGINT" property="yuLiu" />
+    <result column="yu_liu1" jdbcType="VARCHAR" property="yuLiu1" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, shop_name, shop_address, shop_phone, grade, specialties, parking_space, opening_hours, 
+    activity, wifi, shop_imagepath, huifu_time, price, diqu, yu_liu, yu_liu1
+  </sql>
+  
+
+  <!-- 首页轮播随机抽取页面  范绍龙-->
+  <select id="lunboShop" resultMap="BaseResultMap" >
+    SELECT * FROM shop ORDER BY RAND() LIMIT 4
+  </select>
+  
+  <!-- 首页餐馆随机抽取页面  范绍龙-->
+  <select id="indexShop" resultMap="BaseResultMap" >
+    SELECT * FROM shop ORDER BY RAND() LIMIT 3
+  </select>
+
+  <!-- 查询店铺信息 -->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from shop
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from shop
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  
+  <insert id="insertSelective" parameterType="cn.java.entity.Shop" >
+    insert into shop
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="shopName != null" >
+        shop_name,
+      </if>
+      <if test="shopAddress != null" >
+        shop_address,
+      </if>
+      <if test="shopPhone != null" >
+        shop_phone,
+      </if>
+      <if test="grade != null" >
+        grade,
+      </if>
+      <if test="specialties != null" >
+        specialties,
+      </if>
+      <if test="parkingSpace != null" >
+        parking_space,
+      </if>
+      <if test="openingHours != null" >
+        opening_hours,
+      </if>
+      <if test="activity != null" >
+        activity,
+      </if>
+      <if test="wifi != null" >
+        wifi,
+      </if>
+      <if test="shopImagepath != null" >
+        shop_imagepath,
+      </if>
+      <if test="huifuTime != null" >
+        huifu_time,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="diqu != null" >
+        diqu,
+      </if>
+      <if test="yuLiu != null" >
+        yu_liu,
+      </if>
+      <if test="yuLiu1 != null" >
+        yu_liu1,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="shopName != null" >
+        #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="shopAddress != null" >
+        #{shopAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="shopPhone != null" >
+        #{shopPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null" >
+        #{grade,jdbcType=INTEGER},
+      </if>
+      <if test="specialties != null" >
+        #{specialties,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingSpace != null" >
+        #{parkingSpace,jdbcType=VARCHAR},
+      </if>
+      <if test="openingHours != null" >
+        #{openingHours,jdbcType=VARCHAR},
+      </if>
+      <if test="activity != null" >
+        #{activity,jdbcType=VARCHAR},
+      </if>
+      <if test="wifi != null" >
+        #{wifi,jdbcType=VARCHAR},
+      </if>
+      <if test="shopImagepath != null" >
+        #{shopImagepath,jdbcType=VARCHAR},
+      </if>
+      <if test="huifuTime != null" >
+        #{huifuTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=BIGINT},
+      </if>
+      <if test="diqu != null" >
+        #{diqu,jdbcType=VARCHAR},
+      </if>
+      <if test="yuLiu != null" >
+        #{yuLiu,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu1 != null" >
+        #{yuLiu1,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.java.entity.Shop" >
+    update shop
+    <set >
+      <if test="shopName != null" >
+        shop_name = #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="shopAddress != null" >
+        shop_address = #{shopAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="shopPhone != null" >
+        shop_phone = #{shopPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null" >
+        grade = #{grade,jdbcType=INTEGER},
+      </if>
+      <if test="specialties != null" >
+        specialties = #{specialties,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingSpace != null" >
+        parking_space = #{parkingSpace,jdbcType=VARCHAR},
+      </if>
+      <if test="openingHours != null" >
+        opening_hours = #{openingHours,jdbcType=VARCHAR},
+      </if>
+      <if test="activity != null" >
+        activity = #{activity,jdbcType=VARCHAR},
+      </if>
+      <if test="wifi != null" >
+        wifi = #{wifi,jdbcType=VARCHAR},
+      </if>
+      <if test="shopImagepath != null" >
+        shop_imagepath = #{shopImagepath,jdbcType=VARCHAR},
+      </if>
+      <if test="huifuTime != null" >
+        huifu_time = #{huifuTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=BIGINT},
+      </if>
+      <if test="diqu != null" >
+        diqu = #{diqu,jdbcType=VARCHAR},
+      </if>
+      <if test="yuLiu != null" >
+        yu_liu = #{yuLiu,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu1 != null" >
+        yu_liu1 = #{yuLiu1,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectActiveAdmin" parameterType="map" resultType="map">
+		select
+		<include refid="Base_Column_List" />
+		from shop where 1=1
+		<!-- <if test="categoryId != null">
+			and category_id = #{categoryId,jdbcType=BIGINT}
+		</if>  -->
+		<if test="shop_name != null">
+			 and shop_name like concat('%',#{shop_name,jdbcType=VARCHAR},'%')
+		</if>
+		limit #{index},#{pageSize}
+	</select>
+	
+	<select id="selectCountAdmin" parameterType="map" resultType="Integer">
+		select count(*) as sum from shop where 1=1
+		<!-- <if test="categoryId != null">
+			and category_id = #{categoryId,jdbcType=BIGINT}
+		</if> -->
+		<if test="shop_name!= null">
+			and shop_name like concat('%',#{shop_name,jdbcType=VARCHAR},'%')
+		</if>
+	</select>
+	<delete id="deleteShop" parameterType="java.lang.Long" >
+    	delete from shop
+    	where id = #{id,jdbcType=BIGINT}
+  </delete>
+</mapper>

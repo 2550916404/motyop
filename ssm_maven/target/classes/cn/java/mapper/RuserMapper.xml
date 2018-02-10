@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.java.mapper.RuserMapper" >
+  <resultMap id="BaseResultMap" type="cn.java.entity.Ruser" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="u_phone" property="uPhone" jdbcType="BIGINT" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="login_time" property="loginTime" jdbcType="VARCHAR" />
+    <result column="u_email" property="uEmail" jdbcType="VARCHAR" />
+    <result column="nick" property="nick" jdbcType="VARCHAR" />
+    <result column="yu_liu" property="yuLiu" jdbcType="BIGINT" />
+    <result column="yu_liu1" property="yuLiu1" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, u_phone, icon, login_time, u_email, nick, yu_liu, yu_liu1
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from r_user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  
+  
+ 
+  <!--添加初次登录时间  -->
+  <insert id="insertregiste" parameterType="cn.java.entity.Ruser" >
+    insert into r_user (u_phone,login_time,u_email)
+    values (#{uPhone,jdbcType=BIGINT},#{loginTime,jdbcType=VARCHAR}, #{uEmail,jdbcType=VARCHAR})
+  </insert>
+  <!--更新登录时间  -->
+  <update id="updatetime" parameterType="cn.java.entity.Ruser" >
+    update r_user  set   login_time = #{loginTime,jdbcType=VARCHAR}  where id = #{id,jdbcType=BIGINT}
+  </update>
+  <!--修改昵称及头像  -->
+  <update id="updatenick" parameterType="cn.java.entity.Ruser" >
+    update r_user  set   icon = #{icon,jdbcType=VARCHAR},nick = #{nick,jdbcType=VARCHAR}  where id = #{id,jdbcType=BIGINT}
+  </update>
+  <!--查询出ruser表中的数据方便传入session  -->
+   <select id="selecticon" resultType="Map" parameterType="java.lang.Long" >
+    select  icon,nick from r_user where id = #{id,jdbcType=BIGINT}
+  </select>
+  <!-- 修改邮箱 -->
+   <update id="updateemail" parameterType="cn.java.entity.Ruser" >
+    update r_user  set   u_email = #{uEmail,jdbcType=VARCHAR}  where id = #{id,jdbcType=BIGINT}
+  </update>
+  <!-- 修改手机号 -->
+   <update id="updatephone" parameterType="cn.java.entity.Ruser" >
+    update r_user  set   u_phone = #{uPhone,jdbcType=BIGINT}  where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from r_user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.java.entity.Ruser" >
+    insert into r_user (id, u_phone, icon, 
+      login_time, u_email, nick, 
+      yu_liu, yu_liu1)
+    values (#{id,jdbcType=BIGINT}, #{uPhone,jdbcType=BIGINT}, #{icon,jdbcType=VARCHAR}, 
+      #{loginTime,jdbcType=VARCHAR}, #{uEmail,jdbcType=VARCHAR}, #{nick,jdbcType=VARCHAR}, 
+      #{yuLiu,jdbcType=BIGINT}, #{yuLiu1,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.java.entity.Ruser" >
+    insert into r_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uPhone != null" >
+        u_phone,
+      </if>
+      <if test="icon != null" >
+        icon,
+      </if>
+      <if test="loginTime != null" >
+        login_time,
+      </if>
+      <if test="uEmail != null" >
+        u_email,
+      </if>
+      <if test="nick != null" >
+        nick,
+      </if>
+      <if test="yuLiu != null" >
+        yu_liu,
+      </if>
+      <if test="yuLiu1 != null" >
+        yu_liu1,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="uPhone != null" >
+        #{uPhone,jdbcType=BIGINT},
+      </if>
+      <if test="icon != null" >
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="loginTime != null" >
+        #{loginTime,jdbcType=VARCHAR},
+      </if>
+      <if test="uEmail != null" >
+        #{uEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="nick != null" >
+        #{nick,jdbcType=VARCHAR},
+      </if>
+      <if test="yuLiu != null" >
+        #{yuLiu,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu1 != null" >
+        #{yuLiu1,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.java.entity.Ruser" >
+    update r_user
+    <set >
+      <if test="uPhone != null" >
+        u_phone = #{uPhone,jdbcType=BIGINT},
+      </if>
+      <if test="icon != null" >
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="loginTime != null" >
+        login_time = #{loginTime,jdbcType=VARCHAR},
+      </if>
+      <if test="uEmail != null" >
+        u_email = #{uEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="nick != null" >
+        nick = #{nick,jdbcType=VARCHAR},
+      </if>
+      <if test="yuLiu != null" >
+        yu_liu = #{yuLiu,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu1 != null" >
+        yu_liu1 = #{yuLiu1,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.java.entity.Ruser" >
+    update r_user
+    set u_phone = #{uPhone,jdbcType=BIGINT},
+      icon = #{icon,jdbcType=VARCHAR},
+      login_time = #{loginTime,jdbcType=VARCHAR},
+      u_email = #{uEmail,jdbcType=VARCHAR},
+      nick = #{nick,jdbcType=VARCHAR},
+      yu_liu = #{yuLiu,jdbcType=BIGINT},
+      yu_liu1 = #{yuLiu1,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.java.mapper.HistoryMapper" >
+  <resultMap id="BaseResultMap" type="cn.java.entity.History" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="browse_id" property="browseId" jdbcType="BIGINT" />
+    <result column="browse_time" property="browseTime" jdbcType="TIMESTAMP" />
+    <result column="browse_shop" property="browseShop" jdbcType="VARCHAR" />
+    <result column="sid" property="sid" jdbcType="BIGINT" />
+    <result column="yu_liu" property="yuLiu" jdbcType="BIGINT" />
+    <result column="yu_liu1" property="yuLiu1" jdbcType="VARCHAR" />
+  </resultMap>
+<!-- 收藏店铺一对多店铺信息 -->
+  <resultMap id="CollectionMap" type="cn.java.entity.History" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="browse_id" property="browseId" jdbcType="BIGINT" />
+    <result column="browse_time" property="browseTime" jdbcType="TIMESTAMP" />
+    <result column="browse_shop" property="browseShop" jdbcType="VARCHAR" />
+    <result column="sid" property="sid" jdbcType="BIGINT" />
+    <result column="yu_liu" property="yuLiu" jdbcType="BIGINT" />
+    <result column="yu_liu1" property="yuLiu1" jdbcType="VARCHAR" />
+       <collection property="shop" ofType="cn.java.entity.Shop">
+		        <id column="id" jdbcType="BIGINT" property="id" />
+			    <result column="shop_name" jdbcType="VARCHAR" property="shopName" />
+			    <result column="shop_address" jdbcType="VARCHAR" property="shopAddress" />
+			    <result column="shop_phone" jdbcType="VARCHAR" property="shopPhone" />
+			    <result column="grade" jdbcType="INTEGER" property="grade" />
+			    <result column="specialties" jdbcType="VARCHAR" property="specialties" />
+			    <result column="parking_space" jdbcType="VARCHAR" property="parkingSpace" />
+			    <result column="opening_hours" jdbcType="VARCHAR" property="openingHours" />
+			    <result column="activity" jdbcType="VARCHAR" property="activity" />
+			    <result column="wifi" jdbcType="VARCHAR" property="wifi" />
+			    <result column="shop_imagepath" jdbcType="VARCHAR" property="shopImagepath" />
+			    <result column="huifu_time" jdbcType="TIMESTAMP" property="huifuTime" />
+			    <result column="price" jdbcType="BIGINT" property="price" />
+			    <result column="diqu" jdbcType="VARCHAR" property="diqu" />
+			    <result column="yu_liu" jdbcType="BIGINT" property="yuLiu" />
+			    <result column="yu_liu1" jdbcType="VARCHAR" property="yuLiu1" />
+	   </collection>
+  </resultMap>
+	<sql id="Base_Column_List" >
+    	id, browse_id, browse_time, browse_shop, sid, yu_liu, yu_liu1
+  	</sql>
+	<select id="selectActiveAdmin" parameterType="map" resultType="map">
+		select
+		<include refid="Base_Column_List" />
+		from history where 1=1
+		<!-- <if test="categoryId != null">
+			and category_id = #{categoryId,jdbcType=BIGINT}
+		</if> -->
+		<if test="browse_id != null">
+			and browse_id like concat('%',#{browse_id,jdbcType=BIGINT},'%')
+		</if>
+		limit #{index},#{pageSize}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    	delete from history
+    	where id = #{id,jdbcType=BIGINT}
+  </delete>
+	<select id="selectCountAdmin" parameterType="map" resultType="Integer">
+		select count(*) as sum from history where 1=1
+		<!-- <if test="categoryId != null">
+			and category_id = #{categoryId,jdbcType=BIGINT}
+		</if> -->
+		<if test="browse_id != null">
+			and browse_id like concat('%',#{browse_id,jdbcType=BIGINT},'%')
+		</if>
+	</select>
+	
+	<insert id="insert" parameterType="cn.java.entity.History" >
+    insert into history (id, browse_id, browse_time, 
+      browse_shop, sid, yu_liu, 
+      yu_liu1)
+    values (#{id,jdbcType=BIGINT}, #{browseId,jdbcType=BIGINT}, #{browseTime,jdbcType=TIMESTAMP}, 
+      #{browseShop,jdbcType=VARCHAR}, #{sid,jdbcType=BIGINT}, #{yuLiu,jdbcType=BIGINT}, 
+      #{yuLiu1,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.java.entity.History" >
+    insert into history
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="browseId != null" >
+        browse_id,
+      </if>
+      <if test="browseTime != null" >
+        browse_time,
+      </if>
+      <if test="browseShop != null" >
+        browse_shop,
+      </if>
+      <if test="sid != null" >
+        sid,
+      </if>
+      <if test="yuLiu != null" >
+        yu_liu,
+      </if>
+      <if test="yuLiu1 != null" >
+        yu_liu1,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="browseId != null" >
+        #{browseId,jdbcType=BIGINT},
+      </if>
+      <if test="browseTime != null" >
+        #{browseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="browseShop != null" >
+        #{browseShop,jdbcType=VARCHAR},
+      </if>
+      <if test="sid != null" >
+        #{sid,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu != null" >
+        #{yuLiu,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu1 != null" >
+        #{yuLiu1,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.java.entity.History" >
+    update history
+    <set >
+      <if test="browseId != null" >
+        browse_id = #{browseId,jdbcType=BIGINT},
+      </if>
+      <if test="browseTime != null" >
+        browse_time = #{browseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="browseShop != null" >
+        browse_shop = #{browseShop,jdbcType=VARCHAR},
+      </if>
+      <if test="sid != null" >
+        sid = #{sid,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu != null" >
+        yu_liu = #{yuLiu,jdbcType=BIGINT},
+      </if>
+      <if test="yuLiu1 != null" >
+        yu_liu1 = #{yuLiu1,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.java.entity.History" >
+    update history
+    set browse_id = #{browseId,jdbcType=BIGINT},
+      browse_time = #{browseTime,jdbcType=TIMESTAMP},
+      browse_shop = #{browseShop,jdbcType=VARCHAR},
+      sid = #{sid,jdbcType=BIGINT},
+      yu_liu = #{yuLiu,jdbcType=BIGINT},
+      yu_liu1 = #{yuLiu1,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <!-- 收藏店铺信息 -->
+  <select id="collSelect" resultMap="CollectionMap">
+  	SELECT * FROM history h INNER JOIN shop s 
+	ON h.`sid`=s.`id` 
+	WHERE h.`browse_id`= #{0}
+	ORDER BY h.browse_time DESC 
+	LIMIT #{1},#{2};
+  </select>
+  
+  <!-- 取消店铺收藏 -->
+  <delete id="collDelete" parameterType="Long">
+    DELETE FROM history WHERE browse_id=#{0} AND sid=#{1}
+  </delete>
+  
+  <!-- 店铺是否已收藏 -->
+  <select id="collSelectReady" parameterType="Long" resultType="Integer">
+  	SELECT COUNT(*)  FROM history WHERE browse_id=#{0} AND sid=#{1}
+  </select>
+  
+  <!-- 收藏店铺 -->
+  <insert id="collAdd" parameterType="Long">
+  	INSERT INTO history(browse_id,browse_time,sid) VALUES(#{0},NOW(),#{1})
+  </insert>
+
+</mapper>
