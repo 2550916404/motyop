@@ -17,7 +17,7 @@
 
 package com.java.spring.boot.initstart.repository;
 
-import java.util.List;
+import org.springframework.data.repository.CrudRepository;
 
 import com.java.spring.boot.initstart.domain.User;
 
@@ -29,43 +29,6 @@ import com.java.spring.boot.initstart.domain.User;
  * @version
  * @see
  */
-public interface UserRepository {
-    /***
-     * 
-     * Description:创建或者修改用户 <br/>
-     *
-     * @author caiqi
-     * @param user
-     * @return
-     */
-    User saveOrUpdateUser(User user);
-
-    /**
-     * 
-     * Description:删除用户 <br/>
-     *
-     * @author caiqi
-     * @param id
-     */
-    void deleteUser(Long id);
-
-    /**
-     * 
-     * Description:根据id查询用户 <br/>
-     *
-     * @author caiqi
-     * @param id
-     * @return
-     */
-    User getUserById(Long id);
-
-    /**
-     * 
-     * Description: 获取用户列表<br/>
-     *
-     * @author caiqi
-     * @return
-     */
-    List<User> listUser();
+public interface UserRepository extends CrudRepository<User, Long> {
 
 }
